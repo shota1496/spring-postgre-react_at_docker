@@ -1,9 +1,16 @@
 ## Compose sample application
+
 ### Java application with Spring framework and a Postgres database
 
+### And React page with ContactForm
+
 Project structure:
+
 ```
 .
+├── frontend
+│   ├── Dockerfile
+│   └── ...
 ├── backend
 │   ├── Dockerfile
 │   └── ...
@@ -12,11 +19,15 @@ Project structure:
 ├── compose.yaml
 └── README.md
 
+
 ```
 
 [_compose.yaml_](compose.yaml)
+
 ```
 services:
+  frontend:
+    ...
   backend:
     build: backend
     ports:
@@ -25,6 +36,7 @@ services:
     image: postgres
     ...
 ```
+
 The compose file defines an application with two services `backend` and `db`.
 When deploying the application, docker compose maps port 8080 of the backend service container to port 8080 of the host as specified in the file.
 Make sure port 8080 on the host is not already being in use.
@@ -47,6 +59,7 @@ Creating spring-postgres_db_1      ... done
 ## Expected result
 
 Listing containers must show two containers running and the port mapping as below:
+
 ```
 $ docker ps
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                  NAMES
@@ -55,6 +68,22 @@ CONTAINER ID        IMAGE                     COMMAND                  CREATED  
 ```
 
 After the application starts, navigate to `http://localhost:8080` in your web browse or run:
+
+```
+$ curl localhost:8080
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Getting Started: Serving Web Content</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<p>Hello from Docker!</p>
+</body>
+```
+
+To see POST data, navigate to `http://localhost:8080/api/viewconstacs`:
+
 ```
 $ curl localhost:8080
 <!DOCTYPE HTML>
@@ -69,6 +98,7 @@ $ curl localhost:8080
 ```
 
 Stop and remove the containers
+
 ```
 $ docker compose down
 Stopping spring-postgres_db_1      ... done
